@@ -7,7 +7,7 @@ Benchmarking several clojure libraries for web development and their combination
 
 ## The challenges
 
-1. Render a page with 10 <li> content grabbed from a database (10 queries) serving 100 requests each time.  
+First challenge: Render a page with 10 <li> content grabbed from a database (10 queries) serving 100 requests each time.  
 
 ## Preliminary results
 
