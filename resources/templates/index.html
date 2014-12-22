@@ -17,6 +17,17 @@
 	<h4>
 		Test the first variable {{template}}
 	</h4>
+	<ul>
+		{% for number in numbers %}
+		<li>
+			Number {{number.number}} is prime? {{number.status}}
+		</li>
+		{% endfor %}
+	</ul>
+	<footer>
+		<hr/>
+		<p>Copyright PT Zenius Education</p>
+	</footer>
 </center>
 </body>
 </html>

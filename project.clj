@@ -5,12 +5,19 @@
   :dependencies [[org.clojure/clojure "1.6.0"]
                  [compojure "1.3.1"]
                  [ring/ring-defaults "0.1.3"]
+                 [ring "1.3.2"]
+                 [info.sunng/ring-jetty9-adapter "0.7.2"]
                  [http-kit "2.1.16"]
                  [ring-undertow-adapter "0.2.1"]
                  [selmer "0.7.7"]
                  [hiccup "1.0.5"]
                  [enlive "1.1.5"]
-                 ]
+                 [me.shenfeng/mustache "1.1"]
+                 [com.ashafa/clutch "0.4.0"]
+                 [couchbase-clj "0.2.0"]
+                 [com.taoensso/carmine "2.9.0"]
+                 [me.raynes/laser "1.1.1"]]
+  
   :plugins [[lein-ring "0.8.13"]]
   :ring {:handler alfa.core.handler/app}
   :profiles
