@@ -11,18 +11,37 @@
             [hiccup.core :as hc]
             [net.cgrand.enlive-html :as html]
             [couchbase-clj.client :as cb]
-            [me.raynes.laser :as las]))
+            [me.raynes.laser :as las]
+            [com.ashafa.clutch :as cl]
+            [immutant.web :as web]))
 
-(defn gettmp
-  [template? lim port]
+(defn get-tmp
+  [template? lim port dbase]
   (condp = template?
-    :selmer (:body @(http/get (str "http://localhost:" port "/selmer/" lim)))
-    :hiccup (:body @(http/get (str "http://localhost:" port "/hiccup/" lim)))
-    :laser (:body @(http/get (str "http://localhost:" port "/laser/" lim)))
-    :enlive (:body @(http/get (str "http://localhost:" port "/enlive/" lim)))))
+    :selmer (:body @(http/get
+                     (str "http://localhost:" port "/selmer/" lim "/" dbase)))
+    :hiccup (:body @(http/get
+                     (str "http://localhost:" port "/hiccup/" lim "/" dbase)))
+    :laser (:body @(http/get
+                    (str "http://localhost:" port "/laser/" lim "/" dbase)))
+    :enlive (:body @(http/get
+                     (str "http://localhost:" port "/enlive/" lim "/" dbase)))
+    :broklin false))
+
+(defn bench-all
+  [times lim]
+  (let [k {3000 :httpkit 3001 :undertow 3002 :jetty9}]
+    (doseq [s [3000 3001 3002]
+            t [:selmer :hiccup :enlive :laser]
+            d ["couchbase" "couchdb"]]
+      (println (k s) t d
+               (time (reduce + (for [i (range times)]
+                                 (count (get-tmp t lim s d)))))))))
 
 (cb/defclient cbd {:bucket "alfa"
                    :uris ["http://localhost:8091/pools"]})
+
+(def couchdb "kalfak")
 
 (def dir "templates/")
 
@@ -40,13 +59,17 @@
                  (recur (+ i 2))))))))
 
 (defn webdata
-  [lim]
+  [lim dbase]
   {:template "Selmer/hiccup/enlive/laser"
-   :numbers (pmap #(cb/get-json cbd (keyword (str "num" %)))
-                  (range 2 lim))})
+   :numbers (condp = dbase
+              :couchbase (pmap #(cb/get-json cbd (keyword (str "num" %)))
+                               (range 2 lim))
+              :couchdb (pmap #(cl/get-document couchdb
+                                               (str "prime" %))
+                             (range 2 lim)))})
 
 (defn hiccuptmp
-  [lim]
+  [lim dbase]
   (hc/html
    [:head
     [:meta {:charset "UTF-8"}]
@@ -62,15 +85,15 @@
                              (:number %)
                              " is prime? "
                              (:status %)))
-               (:numbers (webdata lim)))]
+               (:numbers (webdata lim dbase)))]
      [:footer
       [:hr]
       [:p "Copyright PT Zenius Education"]]]]))
 
 (defn lasertmp
-  [lim]
+  [lim dbase]
   (las/document
-   (las/parse (slurp (str "resources/" dir "base.html")))
+   (las/parse-fragment (slurp (str "resources/" dir "base.html")))
    (las/id= "firstvar")
    (las/content (str "This is the first var " "this"))
    (las/id= "secondvar")
@@ -80,10 +103,10 @@
                                        " is prime? no? "
                                        (:status %)
                                        "</li>")
-                                 (:numbers (webdata lim)))))))
+                                 (:numbers (webdata lim dbase)))))))
 
 (html/deftemplate tmpenlive "templates/base.html"
-  [lim] 
+  [lim dbase] 
   [:#firstvar] (html/content (str "The first variable " "this"))
   [:#secondvar] (html/content
                  (apply str (map #(str "<li>"
@@ -92,26 +115,27 @@
                                        " is prime? no? "
                                        (:status %)
                                        "</li>")
-                                 (:numbers (webdata lim))))))
+                                 (:numbers (webdata lim dbase))))))
 
 (defn enlivetmp
-  [lim]
-  (reduce str (tmpenlive lim)))
+  [lim dbase]
+  (reduce str (tmpenlive lim dbase)))
 
 (defn homepage
-  [template? lim]
+  [template? lim dbase]
   (condp = template?
     :selmer (selmer/render-file
              (str dir "index.html")
-             (webdata lim))
-    :hiccup (hiccuptmp lim)
-    :enlive (enlivetmp lim)
-    :laser (lasertmp lim)))
+             (webdata lim dbase))
+    :hiccup (hiccuptmp lim dbase)
+    :enlive (enlivetmp lim dbase)
+    :laser (lasertmp lim dbase)))
 
 (defroutes all-routes
-  (GET "/:tmpl/:lim" [tmpl lim]
+  (GET "/:tmpl/:lim/:dbase" [tmpl lim dbase]
        (homepage (keyword tmpl)
-                 (read-string lim)))
+                 (read-string lim)
+                 (keyword dbase)))
   (GET "/" [req] "hellow world")
   (route/files "/static/") 
   (route/not-found "<p>Page not found.</p>"))
@@ -132,13 +156,11 @@
   (atom nil))
 
 (defn stop-undertow []
-  (do (reset! undertow-server)
-      (.stop @under-server)))
+  (do (web/stop @undertow-server)
+      (reset! undertow-server nil)))
 
 (defn start-undertow []
-  (->> {:port 3001}
-       (run-undertow (site all-routes))
-       (reset! undertow-server)))
+  (reset! undertow-server (web/run (site all-routes) {:port 3001})))
 
 (defonce jetty-server
   (atom nil))

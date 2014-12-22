@@ -16,7 +16,8 @@
                  [com.ashafa/clutch "0.4.0"]
                  [couchbase-clj "0.2.0"]
                  [com.taoensso/carmine "2.9.0"]
-                 [me.raynes/laser "1.1.1"]]
+                 [me.raynes/laser "1.1.1"]
+                 [org.immutant/web "2.0.0-beta1"]]
   
   :plugins [[lein-ring "0.8.13"]]
   :ring {:handler alfa.core.handler/app}
