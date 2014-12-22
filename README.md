@@ -3,7 +3,7 @@
 Benchmarking several clojure libraries for web development and their combinations  
 - Servers : http-kit, jetty9, immutant2 (using undertow)  
 - Templating : selmer, hiccup, enlive, laser  
-- Database : couchdb (using clutch), couchbase (using couchbase-clj)  
+- Database : couchdb (clutch), couchbase (couchbase-clj), mysql, redis (carmine)  
 
 ## The challenges
 
