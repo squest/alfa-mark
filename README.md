@@ -5,11 +5,9 @@ Benchmarking several clojure libraries for web development and their combination
 - Templating : selmer, hiccup, enlive, laser  
 - Database : couchdb (using clutch), couchbase (using couchbase-clj)  
 
-## Prerequisites
+## The challenges
 
-You will need [Leiningen][] 2.0.0 or above installed.
-
-[leiningen]: https://github.com/technomancy/leiningen
+1. Render a page with 10 <li> content grabbed from a database (10 queries), serving 100 requests each time.  
 
 ## Preliminary results
 
