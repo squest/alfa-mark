@@ -52,7 +52,7 @@ Preliminary results
   
 
   
-Round 2 : 300 times rendering a page with 10 queries each http-request.  
+Round 2 : 300 times rendering a page with 10 data points grabbed from 1 query per http-request.  
   
 Preliminary result   
 
