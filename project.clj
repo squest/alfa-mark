@@ -9,7 +9,10 @@
                  [info.sunng/ring-jetty9-adapter "0.7.2"]
                  [http-kit "2.1.16"]
                  [ring-undertow-adapter "0.2.1"]
+                 ;;[com.datomic/datomic-free "0.9.5078"]
+                 [postgresql/postgresql "8.4-702.jdbc4"]
                  [selmer "0.7.7"]
+                 [honeysql "0.4.3"]
                  [hiccup "1.0.5"]
                  [enlive "1.1.5"]
                  [me.shenfeng/mustache "1.1"]
@@ -21,7 +24,6 @@
                  [korma "0.4.0"]
                  [org.clojure/java.jdbc "0.3.6"]
                  [mysql/mysql-connector-java "5.1.25"]
-                 [clojurewerkz/cassaforte "2.0.0"]
                  [com.taoensso/carmine "2.9.0"]]
   
   :plugins [[lein-ring "0.8.13"]]

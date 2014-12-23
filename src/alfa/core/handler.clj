@@ -2,13 +2,12 @@
   (:require [compojure.core :refer :all]
             [compojure.route :as route]
             [compojure.handler :refer [site]]
-            [ring.middleware.defaults :refer [wrap-defaults site-defaults]]
             [ring.adapter.jetty9 :refer [run-jetty]]
             [org.httpkit.server :refer [run-server]]
             [org.httpkit.client :as http]
-            [ring.adapter.undertow :refer [run-undertow]]
             [selmer.parser :as selmer]
             [hiccup.core :as hc]
+            [taoensso.carmine :as car :refer [wcar]]
             [net.cgrand.enlive-html :as html]
             [couchbase-clj.client :as cb]
             [me.raynes.laser :as las]
@@ -17,7 +16,7 @@
             [korma.db :as sql]
             [korma.core :as korma]
             [clojure.string :as cs]
-            [taoensso.carmine :as car :refer [wcar]]))
+            [alfa.core.psql :refer [get-prime get-primes]]))
 
 (def conns {:pool {} :spec {:host "localhost" :port 6379}})
 
@@ -55,7 +54,7 @@
   [times lim servers]
   (let [k {3000 :http-kit 3001 :undertow 3002 :jetty9}]
     (doseq [t [:selmer :hiccup :enlive :laser]
-            d ["couchbase" "mysql" "redis"]
+            d ["couchbase" "mysql" "redis" "postgres"]
             s servers]
       (println (k s) t d
                (timing `(reduce +
@@ -71,7 +70,7 @@
                (k s) t d)
        
        (for [t [:selmer :hiccup :enlive :laser]
-             d ["couchbase" "mysql" "redis"]
+             d ["couchbase" "mysql" "redis" "postgres"]
              s servers])
        (let [k {3000 :http-kit 3001 :undertow 3002 :jetty9}])
        (sort-by #(second (first %)))
@@ -112,6 +111,7 @@
               :mysql (pmap #(first (korma/select primes
                                                  (korma/where {:number %})))
                            (range 2 lim))
+              :postgres (pmap get-prime (range 2 lim))
               :redis (pmap #(wcar conns
                                   (car/get %))
                            (range 2 lim)))})
@@ -129,6 +129,7 @@
                                                {:keys (map #(str "prime" %)
                                                            (range 2 lim))
                                                 :include_docs true}))
+              :postgres (get-primes lim)
               :mysql (korma/select primes
                                    (korma/limit lim))
               :redis (pmap #(wcar conns
