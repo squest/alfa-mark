@@ -139,31 +139,31 @@ Preliminary result
 "Elapsed time: 1465.076769 msecs"
 :jetty9 :laser redis 413100  
 
-"Elapsed time: 465.171818 msecs"
+"Elapsed time: 765.412889 msecs"
 :http-kit :selmer couchbase 378300  
-"Elapsed time: 2933.362377 msecs"
+"Elapsed time: 3324.279894 msecs"
 :http-kit :selmer mysql 378300  
-"Elapsed time: 905.451162 msecs"
+"Elapsed time: 1236.40319 msecs"
 :http-kit :selmer redis 378300  
-"Elapsed time: 474.712012 msecs"
+"Elapsed time: 534.035628 msecs"
 :http-kit :hiccup couchbase 273600  
-"Elapsed time: 2748.45804 msecs"
+"Elapsed time: 3140.559958 msecs"
 :http-kit :hiccup mysql 273600  
-"Elapsed time: 773.568194 msecs"
+"Elapsed time: 1139.999868 msecs"
 :http-kit :hiccup redis 273600  
-"Elapsed time: 893.7276 msecs"
-:http-kit :enlive couchbase 415200  
-"Elapsed time: 5129.947865 msecs"
-:http-kit :enlive mysql 415200  
-"Elapsed time: 1361.716065 msecs"
-:http-kit :enlive redis 415200  
-"Elapsed time: 711.915188 msecs"
+"Elapsed time: 1210.85898 msecs"
+:http-kit :enlive couchbase 328800  
+"Elapsed time: 6790.07492 msecs"
+:http-kit :enlive mysql 328800  
+"Elapsed time: 1876.735768 msecs"
+:http-kit :enlive redis 328800  
+"Elapsed time: 1403.514364 msecs"
 :http-kit :laser couchbase 413100  
-"Elapsed time: 2854.476599 msecs"
+"Elapsed time: 3233.401082 msecs"
 :http-kit :laser mysql 413100  
-"Elapsed time: 956.46128 msecs"
+"Elapsed time: 1069.104822 msecs"
 :http-kit :laser redis 413100  
-
+  
 "Elapsed time: 536.823662 msecs"
 :undertow :selmer couchbase 378300  
 "Elapsed time: 3720.166356 msecs"
