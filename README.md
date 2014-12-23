@@ -193,80 +193,42 @@ Preliminary result
 
 Round 3 : Serving 1000 http-requests each rendering a page containing data that needs 50 queries each.  
 
-"Elapsed time: 2967.61709 msecs"
-:jetty9 :selmer couchbase 2664000  
-"Elapsed time: 33747.19982 msecs"
-:jetty9 :selmer mysql 2664000  
-"Elapsed time: 6317.468664 msecs"
-:jetty9 :selmer redis 2664000  
-"Elapsed time: 3397.358048 msecs"
-:jetty9 :hiccup couchbase 1925000  
-"Elapsed time: 34264.339216 msecs"
-:jetty9 :hiccup mysql 1925000  
-"Elapsed time: 5950.469434 msecs"
-:jetty9 :hiccup redis 1925000  
-"Elapsed time: 6711.718793 msecs"
-:jetty9 :enlive couchbase 2229000  
-"Elapsed time: 61472.994567 msecs"
-:jetty9 :enlive mysql 2229000  
-"Elapsed time: 12452.257268 msecs"
-:jetty9 :enlive redis 2229000  
-"Elapsed time: 4030.081856 msecs"
-:jetty9 :laser couchbase 2990000  
-"Elapsed time: 35773.760324 msecs"
-:jetty9 :laser mysql 2990000  
-"Elapsed time: 6797.770936 msecs"
-:jetty9 :laser redis 2990000  
-
-"Elapsed time: 3101.761704 msecs"
-:undertow :selmer couchbase 2664000  
-"Elapsed time: 33308.505666 msecs"
-:undertow :selmer mysql 2664000  
-"Elapsed time: 5733.372008 msecs"
-:undertow :selmer redis 2664000  
-"Elapsed time: 3076.755024 msecs"
-:undertow :hiccup couchbase 1925000  
-"Elapsed time: 34894.573726 msecs"
-:undertow :hiccup mysql 1925000  
-"Elapsed time: 6523.390484 msecs"
-:undertow :hiccup redis 1925000  
-"Elapsed time: 6502.167282 msecs"
-:undertow :enlive couchbase 2229000  
-"Elapsed time: 60882.702112 msecs"
-:undertow :enlive mysql 2229000  
-"Elapsed time: 11189.047124 msecs"
-:undertow :enlive redis 2229000  
-"Elapsed time: 5219.213244 msecs"
-:undertow :laser couchbase 2990000  
-"Elapsed time: 36787.511036 msecs"
-:undertow :laser mysql 2990000  
-"Elapsed time: 6582.225524 msecs"
-:undertow :laser redis 2990000  
-  
-"Elapsed time: 2265.642022 msecs"
-:http-kit :selmer couchbase 2664000  
-"Elapsed time: 23964.789128 msecs"
-:http-kit :selmer mysql 2664000  
-"Elapsed time: 5885.977624 msecs"
-:http-kit :selmer redis 2664000  
-"Elapsed time: 2909.760438 msecs"
-:http-kit :hiccup couchbase 1925000  
-"Elapsed time: 23576.906916 msecs"
-:http-kit :hiccup mysql 1925000  
-"Elapsed time: 7611.201464 msecs"
-:http-kit :hiccup redis 1917520  
-"Elapsed time: 5231.163742 msecs"
-:http-kit :enlive couchbase 2229000  
-"Elapsed time: 44026.658872 msecs"
-:http-kit :enlive mysql 2229000  
-"Elapsed time: 10312.512274 msecs"
-:http-kit :enlive redis 2081168  
-"Elapsed time: 3768.583798 msecs"
-:http-kit :laser couchbase 2990000  
-"Elapsed time: 26862.390528 msecs"
-:http-kit :laser mysql 2990000  
-"Elapsed time: 7443.600346 msecs"
-:http-kit :laser redis 2990000  
+(["1681ms" :http-kit :selmer "couchbase"]  
+ ["1828ms" :http-kit :hiccup "couchbase"]  
+ ["1851ms" :undertow :hiccup "couchbase"]  
+ ["2005ms" :jetty9 :selmer "couchbase"]  
+ ["2195ms" :undertow :selmer "couchbase"]  
+ ["2631ms" :undertow :laser "couchbase"]  
+ ["2760ms" :http-kit :laser "couchbase"]  
+ ["3273ms" :http-kit :selmer "redis"]  
+ ["3374ms" :jetty9 :hiccup "couchbase"]  
+ ["3381ms" :jetty9 :laser "couchbase"]  
+ ["3542ms" :undertow :selmer "redis"]  
+ ["3682ms" :http-kit :hiccup "redis"]  
+ ["3933ms" :undertow :hiccup "redis"]  
+ ["4252ms" :jetty9 :selmer "redis"]  
+ ["4688ms" :http-kit :laser "redis"]  
+ ["4885ms" :jetty9 :enlive "redis"]  
+ ["5050ms" :http-kit :enlive "couchbase"]  
+ ["5193ms" :undertow :laser "redis"]  
+ ["6995ms" :jetty9 :enlive "couchbase"]  
+ ["8213ms" :undertow :enlive "couchbase"]  
+ ["9908ms" :http-kit :enlive "redis"]  
+ ["13904ms" :undertow :enlive "redis"]  
+ ["13942ms" :http-kit :hiccup "mysql"]  
+ ["14982ms" :http-kit :selmer "mysql"]  
+ ["18919ms" :http-kit :laser "mysql"]  
+ ["20029ms" :undertow :selmer "mysql"]  
+ ["20677ms" :jetty9 :hiccup "mysql"]  
+ ["20781ms" :jetty9 :selmer "mysql"]  
+ ["21235ms" :jetty9 :laser "mysql"]  
+ ["21669ms" :undertow :laser "mysql"]  
+ ["23599ms" :undertow :hiccup "mysql"]  
+ ["31733ms" :jetty9 :hiccup "redis"]  
+ ["31825ms" :http-kit :enlive "mysql"]  
+ ["32020ms" :jetty9 :laser "redis"]  
+ ["42575ms" :undertow :enlive "mysql"]  
+ ["44124ms" :jetty9 :enlive "mysql"])  
   
 ## License
 
