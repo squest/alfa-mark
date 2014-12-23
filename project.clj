@@ -17,7 +17,12 @@
                  [couchbase-clj "0.2.0"]
                  [com.taoensso/carmine "2.9.0"]
                  [me.raynes/laser "1.1.1"]
-                 [org.immutant/web "2.0.0-beta1"]]
+                 [org.immutant/web "2.0.0-beta1"]
+                 [korma "0.4.0"]
+                 [org.clojure/java.jdbc "0.3.6"]
+                 [mysql/mysql-connector-java "5.1.25"]
+                 [clojurewerkz/cassaforte "2.0.0"]
+                 [com.taoensso/carmine "2.9.0"]]
   
   :plugins [[lein-ring "0.8.13"]]
   :ring {:handler alfa.core.handler/app}

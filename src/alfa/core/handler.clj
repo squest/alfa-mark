@@ -13,7 +13,24 @@
             [couchbase-clj.client :as cb]
             [me.raynes.laser :as las]
             [com.ashafa.clutch :as cl]
-            [immutant.web :as web]))
+            [immutant.web :as web]
+            [korma.db :as sql]
+            [korma.core :as korma]
+            [clojure.string :as cs]
+            [taoensso.carmine :as car :refer [wcar]]))
+
+(def conns {:pool {} :spec {:host "localhost" :port 6379}})
+
+(sql/defdb msqldb (sql/mysql {:db "test"
+                              :user "squest"
+                              :password ""}))
+
+(declare number status)
+
+(korma/defentity primes
+  (korma/database msqldb)
+  (korma/entity-fields :number :status))
+
 
 (defn get-tmp
   [template? lim port dbase]
@@ -29,14 +46,15 @@
     :broklin false))
 
 (defn bench-all
-  [times lim]
-  (let [k {3000 :httpkit 3001 :undertow 3002 :jetty9}]
-    (doseq [s [3000 3001 3002]
-            t [:selmer :hiccup :enlive :laser]
-            d ["couchbase" "couchdb"]]
+  [times lim servers]
+  (let [k {3000 :http-kit 3001 :undertow 3002 :jetty9}]
+    (doseq [t [:selmer :hiccup :enlive :laser]
+            d ["couchbase" "mysql" "redis"]
+            s servers]
       (println (k s) t d
-               (time (reduce + (for [i (range times)]
-                                 (count (get-tmp t lim s d)))))))))
+               (time (reduce +
+                             (pmap #(do % (count (get-tmp t lim s d)))
+                                   (range times))))))))
 
 (cb/defclient cbd {:bucket "alfa"
                    :uris ["http://localhost:8091/pools"]})
@@ -62,11 +80,20 @@
   [lim dbase]
   {:template "Selmer/hiccup/enlive/laser"
    :numbers (condp = dbase
-              :couchbase (pmap #(cb/get-json cbd (keyword (str "num" %)))
-                               (range 2 lim))
-              :couchdb (pmap #(cl/get-document couchdb
-                                               (str "prime" %))
-                             (range 2 lim)))})
+              :couchbase (pmap #(cb/get-json
+                                 cbd
+                                 (keyword (str "num" %))) (range 2 lim))
+              :couchdb (pmap :doc
+                             (cl/all-documents couchdb
+                                               {:keys (map #(str "prime" %)
+                                                           (range 2 lim))
+                                                :include_docs true}))
+              :mysql (pmap #(first (korma/select primes
+                                                 (korma/where {:number %})))
+                           (range 2 lim))
+              :redis (pmap #(wcar conns
+                                  (car/get %))
+                           (range 2 lim)))})
 
 (defn hiccuptmp
   [lim dbase]
@@ -93,7 +120,7 @@
 (defn lasertmp
   [lim dbase]
   (las/document
-   (las/parse-fragment (slurp (str "resources/" dir "base.html")))
+   (las/parse (slurp (str "resources/" dir "base.html")))
    (las/id= "firstvar")
    (las/content (str "This is the first var " "this"))
    (las/id= "secondvar")
@@ -175,3 +202,8 @@
       (reset! jetty-server nil)))
 
 
+(defn start-all
+  []
+  (do (start-jetty)
+      (start-undertow)
+      (httpkit)))
