@@ -191,7 +191,7 @@ Preliminary result
 "Elapsed time: 925.44777 msecs"
 :undertow :laser redis 413100   
 
-Round 3 : Serving 1000 http-requests each rendering a page containing data that needs 50 queries each.  
+Round 3 : Serving 1000 http-requests each rendering a page containing data that needs 30 queries each.  
 
 (["1681ms" :http-kit :selmer "couchbase"]  
  ["1828ms" :http-kit :hiccup "couchbase"]  
