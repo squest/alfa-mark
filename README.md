@@ -1,9 +1,11 @@
 # Alfa-benchmark
 
 Benchmarking several clojure libraries for web development and their combinations  
-- Servers : http-kit, jetty9, immutant2 (using undertow)  
+- Servers : http-kit, jetty9, undertow (through immutant2)  
 - Templating : selmer, hiccup, enlive, laser  
-- Database : couchdb (clutch), couchbase (couchbase-clj), mysql, redis (carmine)  
+- Database : couchdb (clutch), couchbase (couchbase-clj), mysql (korma), redis (carmine)  
+
+Couchdb isn't included in some of the test since it's very slow for this kind of benchmark, it's better suited to other things.
 
 ## The challenges
 
@@ -114,29 +116,29 @@ Round 2 : 300 times rendering a page with 20 queries each http-request.
   
 Preliminary result   
 
-"Elapsed time: 594.841916 msecs"
+"Elapsed time: 604.919688 msecs"
 :jetty9 :selmer couchbase 378300  
-"Elapsed time: 4503.364768 msecs"
-:jetty9 :selmer mysql 378300   
-"Elapsed time: 975.967329 msecs"
+"Elapsed time: 3885.75229 msecs"
+:jetty9 :selmer mysql 378300  
+"Elapsed time: 923.853082 msecs"
 :jetty9 :selmer redis 378300  
-"Elapsed time: 512.400486 msecs"
-:jetty9 :hiccup couchbase 273600    
-"Elapsed time: 4444.31108 msecs"
+"Elapsed time: 473.007546 msecs"
+:jetty9 :hiccup couchbase 273600  
+"Elapsed time: 4158.362238 msecs"
 :jetty9 :hiccup mysql 273600  
-"Elapsed time: 927.765796 msecs"
+"Elapsed time: 769.688038 msecs"
 :jetty9 :hiccup redis 273600  
-"Elapsed time: 967.52508 msecs"
-:jetty9 :enlive couchbase 415200  
-"Elapsed time: 8842.788012 msecs"
-:jetty9 :enlive mysql 415200  
-"Elapsed time: 1849.074254 msecs"
-:jetty9 :enlive redis 415200  
-"Elapsed time: 1080.351707 msecs"
+"Elapsed time: 1021.005418 msecs"
+:jetty9 :enlive couchbase 328800  
+"Elapsed time: 7747.257286 msecs"
+:jetty9 :enlive mysql 328800  
+"Elapsed time: 1628.95876 msecs"
+:jetty9 :enlive redis 328800  
+"Elapsed time: 714.613206 msecs"
 :jetty9 :laser couchbase 413100  
-"Elapsed time: 4558.380568 msecs"
+"Elapsed time: 4296.988022 msecs"
 :jetty9 :laser mysql 413100  
-"Elapsed time: 1465.076769 msecs"
+"Elapsed time: 1159.235924 msecs"
 :jetty9 :laser redis 413100  
 
 "Elapsed time: 765.412889 msecs"
@@ -164,29 +166,29 @@ Preliminary result
 "Elapsed time: 1069.104822 msecs"
 :http-kit :laser redis 413100  
   
-"Elapsed time: 536.823662 msecs"
+"Elapsed time: 645.30806 msecs"
 :undertow :selmer couchbase 378300  
-"Elapsed time: 3720.166356 msecs"
+"Elapsed time: 4392.787794 msecs"
 :undertow :selmer mysql 378300  
-"Elapsed time: 865.819568 msecs"
+"Elapsed time: 901.384776 msecs"
 :undertow :selmer redis 378300  
-"Elapsed time: 404.548245 msecs"
+"Elapsed time: 471.813468 msecs"
 :undertow :hiccup couchbase 273600  
-"Elapsed time: 3807.636382 msecs"
+"Elapsed time: 4465.612826 msecs"
 :undertow :hiccup mysql 273600  
-"Elapsed time: 848.082053 msecs"
+"Elapsed time: 977.263928 msecs"
 :undertow :hiccup redis 273600  
-"Elapsed time: 934.233224 msecs"
-:undertow :enlive couchbase 415200  
-"Elapsed time: 7475.753266 msecs"
-:undertow :enlive mysql 415200  
-"Elapsed time: 1575.864154 msecs"
-:undertow :enlive redis 415200  
-"Elapsed time: 599.84887 msecs"
+"Elapsed time: 1095.624572 msecs"
+:undertow :enlive couchbase 328800  
+"Elapsed time: 8867.238202 msecs"
+:undertow :enlive mysql 328800  
+"Elapsed time: 1546.487798 msecs"
+:undertow :enlive redis 328800  
+"Elapsed time: 919.669558 msecs"
 :undertow :laser couchbase 413100  
-"Elapsed time: 3950.913056 msecs"
+"Elapsed time: 4735.313702 msecs"
 :undertow :laser mysql 413100  
-"Elapsed time: 1112.180306 msecs"
+"Elapsed time: 1174.356696 msecs"
 :undertow :laser redis 413100  
 
 ## License
