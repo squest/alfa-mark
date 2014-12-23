@@ -31,6 +31,12 @@
   (korma/database msqldb)
   (korma/entity-fields :number :status))
 
+(defn timing
+  [con]
+  (let [start# (System/nanoTime)
+        place (eval con)]
+    [place (quot (- (System/nanoTime) start#) 1000000)]))
+
 
 (defn get-tmp
   [template? lim port dbase]
@@ -52,9 +58,24 @@
             d ["couchbase" "mysql" "redis"]
             s servers]
       (println (k s) t d
-               (time (reduce +
-                             (pmap #(do % (count (get-tmp t lim s d)))
-                                   (range times))))))))
+               (timing `(reduce +
+                                (pmap #(do % (count (get-tmp ~t ~lim ~s ~d)))
+                                      (range ~times)))) "ms"))))
+
+(defn sort-all
+  [times lim servers]
+  (->> (vector (timing
+                `(reduce +
+                         (pmap #(do % (count (get-tmp ~t ~lim ~s ~d)))
+                               (range ~times))))
+               (k s) t d)
+       
+       (for [t [:selmer :hiccup :enlive :laser]
+             d ["couchbase" "mysql" "redis"]
+             s servers])
+       (let [k {3000 :http-kit 3001 :undertow 3002 :jetty9}])
+       (sort-by #(second (first %)))
+       (pmap #(vec (cons (str (second (first %)) "ms") (rest %))))))
 
 (cb/defclient cbd {:bucket "alfa"
                    :uris ["http://localhost:8091/pools"]})
@@ -95,6 +116,25 @@
                                   (car/get %))
                            (range 2 lim)))})
 
+(defn webdata-single
+  [lim dbase]
+  {:template "Selmer/hiccup/enlive/laser"
+   :numbers (condp = dbase
+              :couchbase (vals
+                          (cb/get-multi-json
+                           cbd
+                           (pmap #(str "num" %) (range 2 lim))))
+              :couchdb (pmap :doc
+                             (cl/all-documents couchdb
+                                               {:keys (map #(str "prime" %)
+                                                           (range 2 lim))
+                                                :include_docs true}))
+              :mysql (korma/select primes
+                                   (korma/limit lim))
+              :redis (pmap #(wcar conns
+                                  (car/get %))
+                           (range 2 lim)))})
+
 (defn hiccuptmp
   [lim dbase]
   (hc/html
@@ -112,7 +152,7 @@
                              (:number %)
                              " is prime? "
                              (:status %)))
-               (:numbers (webdata lim dbase)))]
+               (:numbers (webdata-single lim dbase)))]
      [:footer
       [:hr]
       [:p "Copyright PT Zenius Education"]]]]))
@@ -130,19 +170,20 @@
                                        " is prime? no? "
                                        (:status %)
                                        "</li>")
-                                 (:numbers (webdata lim dbase)))))))
+                                 (:numbers (webdata-single lim dbase)))))))
 
 (html/deftemplate tmpenlive "templates/base.html"
   [lim dbase] 
   [:#firstvar] (html/content (str "The first variable " "this"))
   [:#secondvar] (html/content
-                 (apply str (map #(str "<li>"
-                                       "The number "
-                                       (:number %)
-                                       " is prime? no? "
-                                       (:status %)
-                                       "</li>")
-                                 (:numbers (webdata lim dbase))))))
+                 (html/html
+                  (pmap #(vector
+                          :li
+                          (str "The number "
+                               (:number %)
+                               " is prime? "
+                               (:status %)))
+                        (:numbers (webdata-single lim dbase))))))
 
 (defn enlivetmp
   [lim dbase]
@@ -153,7 +194,7 @@
   (condp = template?
     :selmer (selmer/render-file
              (str dir "index.html")
-             (webdata lim dbase))
+             (webdata-single lim dbase))
     :hiccup (hiccuptmp lim dbase)
     :enlive (enlivetmp lim dbase)
     :laser (lasertmp lim dbase)))
