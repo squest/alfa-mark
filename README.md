@@ -141,56 +141,56 @@ Preliminary result
 "Elapsed time: 1159.235924 msecs"
 :jetty9 :laser redis 413100  
 
-"Elapsed time: 765.412889 msecs"
+"Elapsed time: 453.98066 msecs"
 :http-kit :selmer couchbase 378300  
-"Elapsed time: 3324.279894 msecs"
+"Elapsed time: 2392.419206 msecs"
 :http-kit :selmer mysql 378300  
-"Elapsed time: 1236.40319 msecs"
+"Elapsed time: 763.88123 msecs"
 :http-kit :selmer redis 378300  
-"Elapsed time: 534.035628 msecs"
+"Elapsed time: 394.239746 msecs"
 :http-kit :hiccup couchbase 273600  
-"Elapsed time: 3140.559958 msecs"
+"Elapsed time: 2596.736218 msecs"
 :http-kit :hiccup mysql 273600  
-"Elapsed time: 1139.999868 msecs"
+"Elapsed time: 618.408036 msecs"
 :http-kit :hiccup redis 273600  
-"Elapsed time: 1210.85898 msecs"
+"Elapsed time: 835.038888 msecs"
 :http-kit :enlive couchbase 328800  
-"Elapsed time: 6790.07492 msecs"
+"Elapsed time: 5452.861826 msecs"
 :http-kit :enlive mysql 328800  
-"Elapsed time: 1876.735768 msecs"
+"Elapsed time: 1506.332592 msecs"
 :http-kit :enlive redis 328800  
-"Elapsed time: 1403.514364 msecs"
+"Elapsed time: 642.54605 msecs"
 :http-kit :laser couchbase 413100  
-"Elapsed time: 3233.401082 msecs"
+"Elapsed time: 2744.846044 msecs"
 :http-kit :laser mysql 413100  
-"Elapsed time: 1069.104822 msecs"
-:http-kit :laser redis 413100  
+"Elapsed time: 1004.650072 msecs"
+:http-kit :laser redis 413100    
   
-"Elapsed time: 645.30806 msecs"
+"Elapsed time: 339.553257 msecs"
 :undertow :selmer couchbase 378300  
-"Elapsed time: 4392.787794 msecs"
+"Elapsed time: 3744.896082 msecs"
 :undertow :selmer mysql 378300  
-"Elapsed time: 901.384776 msecs"
+"Elapsed time: 696.91626 msecs"
 :undertow :selmer redis 378300  
-"Elapsed time: 471.813468 msecs"
+"Elapsed time: 478.389282 msecs"
 :undertow :hiccup couchbase 273600  
-"Elapsed time: 4465.612826 msecs"
+"Elapsed time: 4308.705594 msecs"
 :undertow :hiccup mysql 273600  
-"Elapsed time: 977.263928 msecs"
+"Elapsed time: 696.853006 msecs"
 :undertow :hiccup redis 273600  
-"Elapsed time: 1095.624572 msecs"
+"Elapsed time: 792.049436 msecs"
 :undertow :enlive couchbase 328800  
-"Elapsed time: 8867.238202 msecs"
+"Elapsed time: 7501.820148 msecs"
 :undertow :enlive mysql 328800  
-"Elapsed time: 1546.487798 msecs"
+"Elapsed time: 1615.149756 msecs"
 :undertow :enlive redis 328800  
-"Elapsed time: 919.669558 msecs"
+"Elapsed time: 613.540148 msecs"
 :undertow :laser couchbase 413100  
-"Elapsed time: 4735.313702 msecs"
+"Elapsed time: 3825.39754 msecs"
 :undertow :laser mysql 413100  
-"Elapsed time: 1174.356696 msecs"
-:undertow :laser redis 413100  
-
+"Elapsed time: 925.44777 msecs"
+:undertow :laser redis 413100   
+  
 ## License
 
 Copyright © 2014 PT Zenius Education
