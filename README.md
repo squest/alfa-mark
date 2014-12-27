@@ -4,6 +4,7 @@ Benchmarking several clojure libraries for web development and their combination
 - Servers : http-kit, jetty9, undertow (through immutant2)  
 - Templating : selmer, hiccup, enlive, laser  
 - Database : couchdb (clutch), couchbase (couchbase-clj), mysql (korma), redis (carmine)  
+- Common Lisp setup : servers restas (hunchentoot), wookie, templating cl-who, and redis
 
 Couchdb isn't included in some of the test since it's very slow for this kind of benchmark, it's better suited to other things.
 
@@ -13,7 +14,8 @@ First challenge: 100 http-requests each rendering a page containing 30 data poin
 
 Preliminary results  
 
-(["47ms" :http-kit :selmer "mysql"]  
+(["46ms" :restas :cl-who "redis"]  
+ ["47ms" :http-kit :selmer "mysql"]  
  ["50ms" :jetty9 :selmer "mysql"]  
  ["55ms" :undertow :selmer "mysql"]  
  ["56ms" :http-kit :hiccup "mysql"]  
@@ -61,6 +63,7 @@ Preliminary result
  ["97ms" :http-kit :selmer "couchbase"]  
  ["100ms" :jetty9 :selmer "couchbase"]  
  ["101ms" :undertow :selmer "couchbase"]  
+ ["110ms" :restas :cl-who "redis"]  
  ["111ms" :jetty9 :hiccup "mysql"]  
  ["118ms" :http-kit :selmer "mysql"]  
  ["118ms" :undertow :hiccup "mysql"]  
@@ -94,7 +97,8 @@ Preliminary result
 
 Round 3 : Serving 1000 http-requests each rendering a page containing data that needs 30 queries each.  
 
-(["1681ms" :http-kit :selmer "couchbase"]  
+(["431ms" :restas :cl-who "redis"]  
+ ["1681ms" :http-kit :selmer "couchbase"]  
  ["1828ms" :http-kit :hiccup "couchbase"]  
  ["1851ms" :undertow :hiccup "couchbase"]  
  ["2005ms" :jetty9 :selmer "couchbase"]  
@@ -133,7 +137,8 @@ Round 3 : Serving 1000 http-requests each rendering a page containing data that 
  
 Round 4 : Nothing special, just added a new contender (postgresql), 300requests with 20queries (1 query for sql) per page.
 
-(["173ms" :http-kit :hiccup "mysql"]  
+(["120ms" :restas :cl-who "redis"]  
+ ["173ms" :http-kit :hiccup "mysql"]  
  ["178ms" :http-kit :selmer "mysql"]  
  ["192ms" :jetty9 :hiccup "mysql"]  
  ["200ms" :undertow :selmer "mysql"]  
@@ -181,6 +186,12 @@ Round 4 : Nothing special, just added a new contender (postgresql), 300requests 
  ["2330ms" :http-kit :enlive "postgres"]  
  ["2450ms" :undertow :enlive "postgres"]  
  ["30041ms" :jetty9 :enlive "postgres"])  
+ 
+ 
+### Conclusion so far:
+
+Common Lisp stack is really-really FAST!!, and this is before using async server like woo or wookie.
+On Clojure side, not much difference between the servers nor the templates (enlive is a bit slower yet have a good design, so just the right trade-off), however on the database side, it's obvious which database is suitable for what task then.  
   
 ## License
 
